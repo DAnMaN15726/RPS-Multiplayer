@@ -15,8 +15,6 @@ firebase.initializeApp(firebaseConfig);
 database = firebase.database();
 
 
-
-
 const player1 = 
 {   
     Name: "",
@@ -39,22 +37,40 @@ const player2 =
 }
 
 
+//responsible for deciding players 1 and 2;
+let array = [];
+// let counter = 0;
+
+
+
+
+
 const game = {
     start: function(){
         console.log("Start function started");
         $(".container").text("Standing by for 2 connections");
 
+        if (array.length === 0){
+            array.push(player1);
+        }
+        else if (array.length === 1){
+            array.push(player2);
+        }
+
+
+        {
+        let button = $("<button>" + "Join" + "</button>");
+        button.attr("id", "Join");
+        button.attr("value", "Join");
+        button.attr("class", "button");
+        $(".container").append(button);
+        }   
         
-        
 
-
-
-
-
-
-
+        return counter++;
     },
     
 }
 
 game.start();
+console.log(counter);
