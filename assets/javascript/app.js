@@ -54,7 +54,7 @@ let counter = 0;
 const game = {
     start: function(){
         console.log("Start function started");
-        $(".container").text("Standing by for 2 connections");
+        
 
         // if (array.length === 0){
         //     array.push(player1);
@@ -69,22 +69,71 @@ const game = {
 
 
 
-
-
-
-        {
-        let button = $("<button>" + "Join" + "</button>");
-        button.attr("id", "Join");
-        button.attr("value", "Join");
-        button.attr("class", "button");
-        $(".container").append(button);
-        }   
-        
-
     
     },
+    stage: function(){
+        if ( player1.Connection === false || player2.Connection === false){
+
+            game.start();
+
+        }
+        else{
+            console.log("Form hidden");
+
+            $(".Form").hide(); 
+        }
+
+        
+        
+
+
+
+
+
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
     
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 game.start();
 
@@ -98,18 +147,18 @@ const connectedRef = database.ref('.info/connected');
 
   
 //counter = 0
-  $(document).on("click", "#Join", function(){
+  $(document).on("click", "#Submit", function(){
+      event.preventDefault();
       
       console.log("Join Button Activated");
 
       if ( player1.Connection === false || player2.Connection === false){
-        console.log(`Player 1 is now ${player1.Connection}`);
-        console.log(`Player 2 is now ${player2.Connection}`);
-
+        
         number = (player1.Connection) ? 2:1 ;
 
         const playerFile = database.ref("/playersDiv/" + number);
         console.log(playerFile);
+
 
         //This sets the value in Firebase
         playerFile.set({
@@ -124,29 +173,17 @@ const connectedRef = database.ref('.info/connected');
         }
         else {
             player2.Connection = true;
+            game.stage();
         }
         
-
-
-
-
-
-
-
-
-
+        playerFile.onDisconnect().remove();
+        console.log(`Player 1 is now ${player1.Connection}`);
+        console.log(`Player 2 is now ${player2.Connection}`);
 
       }
-
-
-
-
-
-
-
-      
-
-
-
   });
+
+
+
   
+
