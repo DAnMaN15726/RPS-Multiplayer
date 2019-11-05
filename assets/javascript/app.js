@@ -39,6 +39,9 @@ const player2 =
 };
 
 let Number = 0;
+let cboolean = false;
+let cboolean1 = false;
+let coboolean2 = false;
 
 
 
@@ -149,6 +152,9 @@ const connectionsRef = database.ref("/connections");
 const playerConnection1 = database.ref('/playersDiv/1');
 const playerConnection2 = database.ref('/playersDiv/2');
 
+const playerFile = database.ref("/playersDiv/");
+const playerFile2 = database.ref("/playersDiv/player2");
+
 // let connectVal = 0;
 
 
@@ -159,9 +165,11 @@ connectedRef.on("value", function(snapshot) {
     if (snapshot.val()) {
   
       const Connect = connectionsRef.push(true);
-      console.log(connectionsRef);
+      
 
+      
       Connect.onDisconnect().remove();
+
     }
 
 
@@ -177,10 +185,13 @@ connectedRef.on("value", function(snapshot) {
 
     if(snap.numChildren() === 1){
         player1.connectVal = 1;
+        let cboolean1 = true;
 
         playerConnection1.set({
-            connect: player1.connectVal
+            connect: player1.connectVal,
+            boolean: cboolean1
         })
+
         console.log(`${playerConnection1.connect} Connections`);
         playerConnection1.onDisconnect().remove();
         
@@ -188,9 +199,11 @@ connectedRef.on("value", function(snapshot) {
     }
     else if(snap.numChildren() === 2){
         player2.connectVal = 2;
+        let cboolean2 = true;
 
         playerConnection2.set({
-            connect: player2.connectVal
+            connect: player2.connectVal,
+            boolean2: cboolean2
         })
         console.log(`${playerConnection2.connect} Connections`);
         playerConnection2.onDisconnect().remove();
@@ -226,39 +239,49 @@ connectedRef.on("value", function(snapshot) {
 //counter = 0
   $(document).on("click", "#Submit", function(){
       event.preventDefault();
+       
+
       
       if( player1.Connection === false){
+        player1.Connection = true;
         
-        const playerFile1 = database.ref("/playersDiv/player1");
         const name = $("#name").val().trim();
         
+        
+        
+        cboolean1 = true;
+        
+        playerFile.set({
+            
+            Player1: {
+                Name: name,
+                Connection: cboolean1
 
-
-        playerFile1.set({
-            Name: name,
-            Choice: null,
-            Connection: true,
-
-
-
+            }
             
 
 
-        });
 
-        console.log(playerFile1.Connection.get());
-        playerFile1.onDisconnect.remove();
+        });
+       
+        
+
+        playerFile.onDisconnect().remove();
       }
+
       else if( player2.Connection === false){
-        const playerFile1 = database.ref("/playersDiv/player1");
+        const playerFile2 = database.ref("/playersDiv/player2");
         const name = $("#name").val().trim();
         
 
 
-        playerFile1.set({
-            Name: name,
-            Choice: null,
-            Connection: true,
+        playerFile.set({
+           
+            Player2: {
+                Name: name,
+                Connection: cboolean1
+
+            }
 
 
 
@@ -266,12 +289,30 @@ connectedRef.on("value", function(snapshot) {
 
 
         });
-        console.log(playerFile2.Connection.get());
-        playerFile2.onDisconnect.remove();
+        player2.Connection = true;
+        
+        playerFile.onDisconnect().remove();
 
 
       }
 
+
+
+      playerFile.on("child_added", function(snapshot, prevChildKey){
+        console.log("DATA ENTERED!");
+        let eData = snapshot.val();
+    
+        if (player1.connectVal === 1){
+            player1.Connection = eData.Connection;
+        }
+        else if (player1.connectVal === 2){
+            player2.Connection = eData.Connection;
+        }
+    
+    
+    });
+      
+    
 
       
 
@@ -279,8 +320,4 @@ connectedRef.on("value", function(snapshot) {
 
       
   });
-
-
-
-  
 
