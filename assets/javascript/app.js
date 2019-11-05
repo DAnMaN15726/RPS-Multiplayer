@@ -22,7 +22,8 @@ const player1 =
     Win: 0,
     Loss: 0,
     Tie: 0,
-    Connection: false
+    Connection: false,
+    connectVal: 0
 };
 
 const player2 = 
@@ -33,7 +34,8 @@ const player2 =
     Win: 0,
     Loss: 0,
     Tie: 0,
-    Connection: false
+    Connection: false,
+    connectVal: 0
 };
 
 let Number = 0;
@@ -46,7 +48,7 @@ let Number = 0;
 //responsible for deciding players 1 and 2;
 let array = [];
 let counter = 0;
-
+let chosen = "";
 
 
 
@@ -84,7 +86,7 @@ const game = {
         }
 
         
-        
+
 
 
 
@@ -134,7 +136,6 @@ const game = {
 
 
 
-
 game.start();
 
 
@@ -143,6 +144,82 @@ const playersDiv = database.ref('/playersDiv');
 const chatRef = database.ref('/chat');
 
 const connectedRef = database.ref('.info/connected');
+const connectionsRef = database.ref("/connections");
+
+const playerConnection1 = database.ref('/playersDiv/1');
+const playerConnection2 = database.ref('/playersDiv/2');
+
+// let connectVal = 0;
+
+
+//this adds children for every user in
+connectedRef.on("value", function(snapshot) {
+
+    
+    if (snapshot.val()) {
+  
+      const Connect = connectionsRef.push(true);
+      console.log(connectionsRef);
+
+      Connect.onDisconnect().remove();
+    }
+
+
+  });
+  
+
+
+ 
+//this prints out how many children there are
+  connectionsRef.on("value", function(snap){
+
+    $("#start").text(`${snap.numChildren()} Inside`);
+
+    if(snap.numChildren() === 1){
+        player1.connectVal = 1;
+
+        playerConnection1.set({
+            connect: player1.connectVal
+        })
+        console.log(`${playerConnection1.connect} Connections`);
+        playerConnection1.onDisconnect().remove();
+        
+        number = 1;
+    }
+    else if(snap.numChildren() === 2){
+        player2.connectVal = 2;
+
+        playerConnection2.set({
+            connect: player2.connectVal
+        })
+        console.log(`${playerConnection2.connect} Connections`);
+        playerConnection2.onDisconnect().remove();
+
+        number = 2;
+    }
+    
+    
+
+
+  });
+
+
+// playersDiv.ref.on("value", function(snapshot){
+//     let x = snapshot;
+//     console.log(x);
+    
+// });
+
+  
+
+
+
+
+
+
+
+
+
 
 
   
@@ -150,37 +227,57 @@ const connectedRef = database.ref('.info/connected');
   $(document).on("click", "#Submit", function(){
       event.preventDefault();
       
-      console.log("Join Button Activated");
-
-      if ( player1.Connection === false || player2.Connection === false){
+      if( player1.Connection === false){
         
-        number = (player1.Connection) ? 2:1 ;
+        const playerFile1 = database.ref("/playersDiv/player1");
+        const name = $("#name").val().trim();
+        
 
-        const playerFile = database.ref("/playersDiv/" + number);
-        console.log(playerFile);
+
+        playerFile1.set({
+            Name: name,
+            Choice: null,
+            Connection: true,
 
 
-        //This sets the value in Firebase
-        playerFile.set({
-            name: `Player ${number}`
+
+            
+
+
         });
+
+        console.log(playerFile1.Connection.get());
+        playerFile1.onDisconnect.remove();
+      }
+      else if( player2.Connection === false){
+        const playerFile1 = database.ref("/playersDiv/player1");
+        const name = $("#name").val().trim();
         
 
 
-        //This changes Connection Values to True accordingly
-        if(number === 1){
-            player1.Connection = true;
-        }
-        else {
-            player2.Connection = true;
-            game.stage();
-        }
-        
-        playerFile.onDisconnect().remove();
-        console.log(`Player 1 is now ${player1.Connection}`);
-        console.log(`Player 2 is now ${player2.Connection}`);
+        playerFile1.set({
+            Name: name,
+            Choice: null,
+            Connection: true,
+
+
+
+            
+
+
+        });
+        console.log(playerFile2.Connection.get());
+        playerFile2.onDisconnect.remove();
+
 
       }
+
+
+      
+
+
+
+      
   });
 
 
