@@ -240,7 +240,7 @@ connectedRef.on("value", function(snapshot) {
             player1.Connection = true;
         }
         else{
-            player2.Connection = false;
+            player2.Connection = true;
         }
 
 
