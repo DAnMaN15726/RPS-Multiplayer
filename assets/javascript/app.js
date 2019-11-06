@@ -260,7 +260,7 @@ connectedRef.on("value", function(snapshot) {
 });
 
 
-playerFile.on("value", function(snapshot) {
+playerSelect.on("value", function(snapshot) {
     connectionC = snapshot.numChildren();
 
     player1.Connection = snapshot.child(1).exists();
