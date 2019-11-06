@@ -125,8 +125,13 @@ const connectionsRef = database.ref("/connections");
 const playerConnection1 = database.ref('/playersDiv/1');
 const playerConnection2 = database.ref('/playersDiv/2');
 
-const playerFile = database.ref("/playersDiv/");
-const playerFile2 = database.ref("/playersDiv/player2");
+
+
+
+
+
+const playerFile = database.ref("/playersDiv");
+
 
 // let connectVal = 0;
 
@@ -260,7 +265,8 @@ connectedRef.on("value", function(snapshot) {
 });
 
 
-playerSelect.on("value", function(snapshot) {
+playerFile.on("value", function(snapshot) {
+    
     connectionC = snapshot.numChildren();
 
     player1.Connection = snapshot.child(1).exists();
