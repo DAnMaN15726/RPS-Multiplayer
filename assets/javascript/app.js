@@ -64,6 +64,7 @@ const game = {
     start: function(x){
         console.log("Start function started");
         
+        
 
 
 
@@ -73,6 +74,7 @@ const game = {
     stage: function(){
         console.log("stage set");
         $("#container2").show();
+        $("#continue").hide();
 
         
         
@@ -83,6 +85,7 @@ const game = {
     },
     compare: function(arr){
         $(".container2").hide();
+        connectionC = 0
 
 
 
@@ -95,51 +98,52 @@ const game = {
         }
 
         if( arr[0] === "Rock" && arr[1] === "Rock"){
-            $(".container").text("It's a Tie!");
+            $(".navbar-brand").text("Tie");
             console.log("TIE");
             game.reset();
+            
         }
         else if( arr[0] === "Rock" && arr[1] === "Paper"){
-            $(".container").text("Paper wins!");
+            $(".navbar-brand").text("Paper");
             console.log("Paper");
             game.reset();
         }
         else if( arr[0] === "Rock" && arr[1] === "Scissors"){
-            $(".container").text("Rock Wins!");
+            $(".navbar-brand").text("Rock");
             console.log("Rock");
             game.reset();
         }
 
 
         else if( arr[0] === "Paper" && arr[1] === "Paper"){
-            $(".container").text("It's a Tie!");
+            $(".navbar-brand").text("Tie");
             console.log("TIE");
             game.reset();
         }
         else if( arr[0] === "Paper" && arr[1] === "Scissors"){
-            $(".container").text("Scissors Wins!");
+            $(".navbar-brand").text("Scissors");
             console.log("Scissors");
             game.reset();
         }
         else if( arr[0] === "Paper" && arr[1] === "Rock"){
-            $(".container").text("Paper wins!");
+            $(".navbar-brand").text("Paper");
             console.log("Paper");
             game.reset();
         }
 
 
         else if( arr[0] === "Scissors" && arr[1] === "Scissors"){
-            $(".container").text("It's a Tie!");
+            $(".navbar-brand").text("Tie");
             console.log("Tie");
             game.reset();
         }
         else if( arr[0] === "Scissors" && arr[1] === "Paper"){
-            $(".container").text("Scissors Wins!");
+            $(".navbar-brand").text("Scissors");
             console.log("Scissors");
             game.reset();
         }
         else if( arr[0] === "Scissors" && arr[1] === "Rock"){
-            $(".container").text("Rock Wins!");
+            $(".navbar-brand").text("Rock");
             console.log("Rock");
             game.reset();
         }
@@ -161,11 +165,20 @@ const game = {
         console.log("RRRRESET!");
         array = [];
         counter = 0;
-        
+
+        connectionC = 0
         $("#container2").show();
         
         
 
+
+
+    },
+    standBy: function(x){
+
+        if(x === 1){
+            
+        }
 
 
     }
@@ -273,7 +286,7 @@ connectedRef.on("value", function(snapshot) {
 
   $(document).on("click", "#Submit", function(event) {
     event.preventDefault();
-    
+
     $("#container2").show();
     console.log("Submit Button Clicked");
 
@@ -320,7 +333,7 @@ connectedRef.on("value", function(snapshot) {
      
 
     }
-        
+    $("#continue").toggleClass("active");
     $("#start2").hide();
     
     
@@ -348,7 +361,7 @@ playerFile.on("value", function(snapshot) {
 
 
     if( connectionC === 2) {
-
+        
         game.stage();
         
     }
@@ -372,6 +385,7 @@ playerFile.on("child_added", function(snapshot){
 
 
 $("#container2").on("click", ".btn", function(){
+    $("#continue").show();
     
     console.log($(this).attr("value"));
 
@@ -387,7 +401,7 @@ $("#container2").on("click", ".btn", function(){
 
 
     });
-    $("#container2").hide();
+    
     playerAnswer.onDisconnect().remove();
 
 
@@ -440,4 +454,12 @@ playerFile.on("child_changed", function(snapshot){
 
 
 });
+
+
+
+$("#container2").hide();
+
+// HTML/ETC.
+
+$("#continue").append("<h1>Stand By....</h1>");
 
