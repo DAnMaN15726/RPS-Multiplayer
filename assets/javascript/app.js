@@ -38,10 +38,13 @@ const player2 =
     connectVal: 0
 };
 
-let Number = 0;
+let number = 0;
 let cboolean = false;
 let cboolean1 = false;
 let coboolean2 = false;
+
+let play1;
+let play2;
 
 
 
@@ -60,7 +63,7 @@ let connectionC = 0
 const game = {
     start: function(x){
         console.log("Start function started");
-        $(".container").append(`You are Player ${x}`)
+        
 
 
 
@@ -68,6 +71,10 @@ const game = {
     
     },
     stage: function(){
+        console.log("stage set");
+        $("#container2").show();
+
+        
         
 
         
@@ -106,17 +113,6 @@ const game = {
 
 
 
-
-
-
-
-
-
-game.start();
-
-
-
-
 const chatRef = database.ref('/chat');
 
 const connectedRef = database.ref('.info/connected');
@@ -127,13 +123,15 @@ const playerConnection2 = database.ref('/playersDiv/2');
 
 
 
-
-
-
 const playerFile = database.ref("/playersDiv");
 
 
+
+
+
+
 // let connectVal = 0;
+$("#container2").hide();
 
 
 //this adds children for every user in
@@ -167,11 +165,7 @@ connectedRef.on("value", function(snapshot) {
         let cboolean1 = true;
         
 
-        playerConnection1.set({
-            connect: player1.connectVal,
-            boolean: cboolean1
-
-        })
+        
         playerConnection1.onDisconnect().remove();
         
         
@@ -181,11 +175,7 @@ connectedRef.on("value", function(snapshot) {
         let cboolean2 = true;
         
 
-        playerConnection2.set({
-            connect: player2.connectVal,
-            boolean2: cboolean2
-            
-        })
+        
         playerConnection2.onDisconnect().remove();
 
         
@@ -198,6 +188,7 @@ connectedRef.on("value", function(snapshot) {
 
   $(document).on("click", "#Submit", function(event) {
     event.preventDefault();
+    
     console.log("Submit Button Clicked");
 
     
@@ -209,25 +200,9 @@ connectedRef.on("value", function(snapshot) {
 
     
     if(player1.Connection === false || player2.Connection === false){
-        number = player1.Connection ? 2:1 ;
+        number = (player1.Connection) ? 2:1 ;
 
         const playerSelect = database.ref(`/playersDiv/${number}`)
-
-        if(number === 1){
-            player1.connectVal = 1;
-        }
-        else{
-            player2.connectVal = 2;
-        }
-
-
-
-
-
-
-
-
-
 
         playerSelect.set({
 
@@ -238,39 +213,65 @@ connectedRef.on("value", function(snapshot) {
 
         })
 
-        playerSelect.onDisconnect().remove();
+
 
 
         if( number === 1){
             player1.Connection = true;
         }
-        else{
+        else if (number === 2){
             player2.Connection = true;
         }
 
 
 
+        playerSelect.onDisconnect().remove();
+
+
+
+
      
-        
-
-
-
-
-
 
     }
         
-        
+    $("#start2").hide();
+    
+    
 
 });
 
 
 playerFile.on("value", function(snapshot) {
 
+    
     connectionC = snapshot.numChildren();
+    console.log(connectionC);
 
     player1.Connection = snapshot.child(1).exists();
+    console.log(player1.Connection);
+    
     player2.Connection = snapshot.child(2).exists();
+    console.log(player2.Connection);
+
+
+    if( connectionC === 2) {
+
+        game.stage();
+        
+    }
+
+    
+
+});
+
+
+playerFile.on("child_added", function(snapshot){
+    
+    let data = snapshot.val();
+    console.log(data.Name);
+
+
+
 
 
 });
