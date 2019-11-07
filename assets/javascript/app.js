@@ -91,7 +91,61 @@ const game = {
             console.log(arr[i]);
 
 
+
         }
+
+        if( arr[0] === "Rock" && arr[1] === "Rock"){
+            $(".container").text("It's a Tie!");
+            console.log("TIE");
+            game.reset();
+        }
+        else if( arr[0] === "Rock" && arr[1] === "Paper"){
+            $(".container").text("Paper wins!");
+            console.log("Paper");
+            game.reset();
+        }
+        else if( arr[0] === "Rock" && arr[1] === "Scissors"){
+            $(".container").text("Rock Wins!");
+            console.log("Rock");
+            game.reset();
+        }
+
+
+        else if( arr[0] === "Paper" && arr[1] === "Paper"){
+            $(".container").text("It's a Tie!");
+            console.log("TIE");
+            game.reset();
+        }
+        else if( arr[0] === "Paper" && arr[1] === "Scissors"){
+            $(".container").text("Scissors Wins!");
+            console.log("Scissors");
+            game.reset();
+        }
+        else if( arr[0] === "Paper" && arr[1] === "Rock"){
+            $(".container").text("Paper wins!");
+            console.log("Paper");
+            game.reset();
+        }
+
+
+        else if( arr[0] === "Scissors" && arr[1] === "Scissors"){
+            $(".container").text("It's a Tie!");
+            console.log("Tie");
+            game.reset();
+        }
+        else if( arr[0] === "Scissors" && arr[1] === "Paper"){
+            $(".container").text("Scissors Wins!");
+            console.log("Scissors");
+            game.reset();
+        }
+        else if( arr[0] === "Scissors" && arr[1] === "Rock"){
+            $(".container").text("Rock Wins!");
+            console.log("Rock");
+            game.reset();
+        }
+        
+
+
         
 
 
@@ -99,6 +153,18 @@ const game = {
 
 
 
+
+
+
+    },
+    reset: function(){
+        console.log("RRRRESET!");
+        array = [];
+        counter = 0;
+        
+        $("#container2").show();
+        
+        
 
 
 
@@ -208,6 +274,7 @@ connectedRef.on("value", function(snapshot) {
   $(document).on("click", "#Submit", function(event) {
     event.preventDefault();
     
+    $("#container2").show();
     console.log("Submit Button Clicked");
 
     
