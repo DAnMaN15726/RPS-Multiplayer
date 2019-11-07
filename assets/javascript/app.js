@@ -80,11 +80,29 @@ const game = {
         
 
 
+    },
+    compare: function(arr){
+        $(".container2").hide();
+
+
+
+
+        for( let i = 0; i < arr.length; i++){
+            console.log(arr[i]);
+
+
+        }
+        
+
+
+
+
+
+
+
+
+
     }
-
-
-
-
 
 
 
@@ -124,6 +142,7 @@ const playerConnection2 = database.ref('/playersDiv/2');
 
 
 const playerFile = database.ref("/playersDiv");
+const playerAnswer = database.ref(`/playersDiv/${number}`);
 
 
 
@@ -208,7 +227,8 @@ connectedRef.on("value", function(snapshot) {
 
             Name: name,
             Connection: true,
-            connectVal: number
+            connectVal: number,
+            Answer: number
 
 
         })
@@ -241,6 +261,10 @@ connectedRef.on("value", function(snapshot) {
 });
 
 
+
+let playerX = 0;
+let playerY = 0;
+
 playerFile.on("value", function(snapshot) {
 
     
@@ -248,9 +272,11 @@ playerFile.on("value", function(snapshot) {
     console.log(connectionC);
 
     player1.Connection = snapshot.child(1).exists();
+    playerX = player1;
     console.log(player1.Connection);
     
     player2.Connection = snapshot.child(2).exists();
+    playerY = player1;
     console.log(player2.Connection);
 
 
@@ -266,7 +292,7 @@ playerFile.on("value", function(snapshot) {
 
 
 playerFile.on("child_added", function(snapshot){
-    
+    console.log("CHILD ADDED RAN");
     let data = snapshot.val();
     console.log(data.Name);
 
@@ -275,3 +301,76 @@ playerFile.on("child_added", function(snapshot){
 
 
 });
+
+
+
+$("#container2").on("click", ".btn", function(){
+    
+    console.log($(this).attr("value"));
+
+    let answer = $(this).attr("value");
+
+    const playerAnswer = database.ref(`/playersDiv/${number}`);
+
+    console.log(number);
+
+    playerAnswer.update({
+
+        Answer: answer
+
+
+    });
+    $("#container2").hide();
+    playerAnswer.onDisconnect().remove();
+
+
+});
+
+
+let data1 = "null";
+let data2 = "null";
+
+// playerFile.on("value", function(snapshot){
+//     console.log("ACTIVATED");
+//     // const data1;
+//     // const data2;
+//     if (snapshot.numChildren() === 1){
+//         data1 = snapshot.val();
+//         console.log(data1.Answer);
+
+//     }
+//     else if ( snapshot.numChildren() === 2){
+//         data2 = snapshot.val();
+//         console.log(data2.Answer);
+//         game.compare(data1, data2);
+
+        
+
+//     };
+
+    
+
+
+
+// });
+
+playerFile.on("child_changed", function(snapshot){
+    
+
+    console.log("CHANGED RAN");
+    data = snapshot.val();
+    console.log(data);
+    console.log(counter);
+
+    array.push(data.Answer);
+    console.log(array[counter]);
+    counter++;
+
+
+    if( counter === 2){
+        game.compare(array);
+    }
+
+
+});
+
